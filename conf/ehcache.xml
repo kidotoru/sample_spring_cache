@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+    <!--
+
+    <cacheManagerPeerProviderFactory
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+        properties="peerDiscovery=manual,
+                  rmiUrls=//localhost:5002/itemCache"/>
+    
+    
+   <cacheManagerPeerListenerFactory
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+        properties="hostName=localhost, port=5001, socketTimeoutMillis=20000"/>    
+        <cacheManagerPeerProviderFactory 
+class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" 
+properties="peerDiscovery=automatic, multicastGroupAddress=224.1.1.1, 
+multicastGroupPort=4446, timeToLive=32"/>
+
+<cacheManagerPeerListenerFactory 
+class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/>    
+-->
+    
+  <cache name="itemCache"
+         maxEntriesLocalHeap="1000"
+         timeToLiveSeconds="0"
+         timeToIdleSeconds="60"
+         memoryStoreEvictionPolicy="LRU">
+
+      <!--      
+<cacheEventListenerFactory
+class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+properties="replicateAsynchronously=true, replicatePuts=true,
+replicateUpdates=true, replicateUpdatesViaCopy=true,
+replicateRemovals=true"/>
+-->
+
+
+  </cache>
+  
+  <!--
+  時間は全て秒 0 は無制限
+  
+  maxEntriesLocalHeap = ヒープに保存できる Element の個数
+  timeToLiveSeconds = 登録してから一定時間過ぎたら破棄
+  timeToIdleSeconds = 最後にアクセスしてから一定時間過ぎたら破棄
+  
+    memoryStoreEvictionPolicy キャッシュアルゴリズム 
+      LRU (Least Recently Used)  最後に参照してから最も長い時間が経過したデータを最初に捨てる。
+      FIFO (First In First Out)
+      LFU (Least Frequently Used) 参照頻度が最も少ないデータを最初に捨てる。
+    -->
+
+</ehcache>

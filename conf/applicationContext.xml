@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xmlns:cache="http://www.springframework.org/schema/cache"     
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/cache 
+     http://www.springframework.org/schema/cache/spring-cache.xsd">
+   
+   
+
+    <context:annotation-config/>     
+    <cache:annotation-driven />
+    <context:component-scan base-package="net.treewoods"/>
+    
+    <bean id="CacheSample" class="net.treewoods.sample_spring_cache.beans.CacheSample" lazy-init="true"/>
+    
+    
+    <!--
+    http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#_supported_cache_providers
+    
+    Supported cache providers.
+    
+    Generic
+    JCache (JSR-107) (EhCache 3, Hazelcast, Infinispan, etc)
+    EhCache 2.x
+    Hazelcast
+    Infinispan
+    Couchbase
+    Redis
+    Caffeine
+    Guava (deprecated)
+    Simple    
+    
+    -->
+
+    <bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager">
+        <property name="cacheManagers">
+            <list>   
+                <ref bean="ehCacheManager"/>
+            </list>
+        </property>
+        <property name="fallbackToNoOpCache" value="true"/>
+    </bean>
+
+    <bean id="jdkCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="itemCache"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="ehCacheManager"
+          class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+      
+
+    <!-- EhCache library setup -->
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="./conf/ehcache.xml"/>
+    </bean>
+                        
+</beans>
