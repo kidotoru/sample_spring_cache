@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"  
        xmlns:cache="http://www.springframework.org/schema/cache"     
        xsi:schemaLocation="
@@ -9,7 +10,9 @@
      http://www.springframework.org/schema/context
      http://www.springframework.org/schema/context/spring-context.xsd
      http://www.springframework.org/schema/cache 
-     http://www.springframework.org/schema/cache/spring-cache.xsd">
+     http://www.springframework.org/schema/cache/spring-cache.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
    
    
 
@@ -41,10 +44,10 @@
     <bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager">
         <property name="cacheManagers">
             <list>   
-                <ref bean="ehCacheManager"/>
+                <ref bean="jsr107Manager"/>
             </list>
         </property>
-        <property name="fallbackToNoOpCache" value="true"/>
+        <property name="fallbackToNoOpCache" value="false"/>
     </bean>
 
     <bean id="jdkCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
@@ -56,16 +59,39 @@
             </set>
         </property>
     </bean>
-
     <bean id="ehCacheManager"
           class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcache"/>
     </bean>
-      
-
-    <!-- EhCache library setup -->
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="ehcache.xml"/>
     </bean>
-                        
+
+    
+    <bean id="jsr107Manager" class="org.springframework.cache.jcache.JCacheCacheManager">
+        <property name="cacheManager" ref="jCacheManager" />
+    </bean>    
+
+    
+    <bean id="jCacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
+        <property name="cacheManagerUri" value="file:conf/ehcache3.xml"/>
+    </bean>
+    
+    <!--
+    <cache:advice id="cacheAdvice" cache-manager="cacheManager">
+        <cache:caching cache="itemCache">
+            <cache:cacheable method="find" key="#id"/>
+            <cache:cache-put method="update" key="#item.id"/>
+
+            <cache:cache-evict method="put" key="#item.id"/>
+
+            <cache:cache-evict method="clear" all-entries="true"/>
+        </cache:caching>
+    </cache:advice>
+    
+    <aop:config>
+        <aop:advisor advice-ref="cacheAdvice" pointcut="execution(* *..ItemService.*(..))"/>
+    </aop:config>    
+    -->
+                                                                        
 </beans>

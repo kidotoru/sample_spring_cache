@@ -41,10 +41,10 @@
     <bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager">
         <property name="cacheManagers">
             <list>   
-                <ref bean="ehCacheManager"/>
+                <ref bean="jsr107Manager"/>
             </list>
         </property>
-        <property name="fallbackToNoOpCache" value="true"/>
+        <property name="fallbackToNoOpCache" value="false"/>
     </bean>
 
     <bean id="jdkCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
@@ -63,9 +63,16 @@
     </bean>
       
 
-    <!-- EhCache library setup -->
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="./conf/ehcache.xml"/>
     </bean>
+    <bean id="jsr107Manager" class="org.springframework.cache.jcache.JCacheCacheManager">
+        <property name="cacheManager" ref="jCacheManager" />
+    </bean>    
+
+    
+    <bean id="jCacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
+        <property name="cacheManagerUri" value="file:conf/ehcache3.xml"/>
+    </bean>    
                         
 </beans>

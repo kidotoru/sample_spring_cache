@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.treewoods.sample_spring_cache.beans;
 
+import java.util.concurrent.TimeUnit;
 import net.treewoods.sample_spring_cache.cache.Item;
 import net.treewoods.sample_spring_cache.service.ItemService;
 import org.slf4j.Logger;
@@ -12,11 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
-
-/**
- *
- * @author toru
- */
 public class CacheSample implements Job{
     
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -24,7 +15,6 @@ public class CacheSample implements Job{
     @Autowired
     private ItemService itemService;
     
-
     @Override
     public void execute(String[] args) {
         log.info("start.");
@@ -57,14 +47,14 @@ public class CacheSample implements Job{
         
         log.info("更新後の取得");
         stopWatch.start();
-        itemService.find("test-id");
+        item = itemService.find("test-id");
         stopWatch.stop();
         log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
 
 
         log.info("更新後の２回めの取得（キャッシュから）");
         stopWatch.start();
-        itemService.find("test-id");
+        item = itemService.find("test-id");
         stopWatch.stop();
         log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
 
@@ -76,16 +66,50 @@ public class CacheSample implements Job{
 
         log.info("キャッシュ全クリア後の取得");
         stopWatch.start();
-        itemService.find("test-id");
+        item = itemService.find("test-id");
         stopWatch.stop();
         log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
         
         log.info("キャッシュ全クリア後の２回目の取得（キャッシュから）");
         stopWatch.start();
-        itemService.find("test-id");
+        item = itemService.find("test-id");
         stopWatch.stop();
         log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
 
+        
+        for(int i = 1; i <= 10; i++) {
+            item = new Item("key-" + String.valueOf(i));
+            item.setName("val-" + String.valueOf(i));
+            itemService.put(item);
+            itemService.find("key-" + String.valueOf(i));
+        }
+        
+        
+        log.info("キャッシュ全クリア後の２回目の取得（キャッシュからとれない）");
+        stopWatch.start();
+        item = itemService.find("test-id");
+        stopWatch.stop();
+        log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
+
+        log.info("キャッシュ全クリア後の２回目の取得");
+        stopWatch.start();
+        item = itemService.find("test-id");
+        stopWatch.stop();
+        log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
+        
+
+        try {
+            TimeUnit.SECONDS.sleep(10L);
+        } catch (InterruptedException e) {
+        }        
+
+        log.info("TTL（キャッシュからとれない）");
+        stopWatch.start();
+        item = itemService.find("test-id");
+        stopWatch.stop();
+        log.info("value={} elapsed time={}",item.getName(), stopWatch.getLastTaskInfo().getTimeSeconds());
+
+        
         log.info("finish.");
     }
     
