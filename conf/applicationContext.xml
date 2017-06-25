@@ -11,15 +11,12 @@
      http://www.springframework.org/schema/cache 
      http://www.springframework.org/schema/cache/spring-cache.xsd">
    
-   
-
     <context:annotation-config/>     
     <cache:annotation-driven />
     <context:component-scan base-package="net.treewoods"/>
     
     <bean id="CacheSample" class="net.treewoods.sample_spring_cache.beans.CacheSample" lazy-init="true"/>
-    
-    
+        
     <!--
     http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#_supported_cache_providers
     
@@ -47,6 +44,7 @@
         <property name="fallbackToNoOpCache" value="false"/>
     </bean>
 
+    <!-- Simple -->
     <bean id="jdkCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
         <property name="caches">
             <set>
@@ -57,20 +55,19 @@
         </property>
     </bean>
 
+    <!-- EhCache 2.x -->
     <bean id="ehCacheManager"
           class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcache"/>
     </bean>
-      
-
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="./conf/ehcache.xml"/>
     </bean>
+
+    <!-- JCache (JSR-107) -->
     <bean id="jsr107Manager" class="org.springframework.cache.jcache.JCacheCacheManager">
         <property name="cacheManager" ref="jCacheManager" />
     </bean>    
-
-    
     <bean id="jCacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
         <property name="cacheManagerUri" value="file:conf/ehcache3.xml"/>
     </bean>    

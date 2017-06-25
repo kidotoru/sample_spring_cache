@@ -1,22 +1,71 @@
-package net.treewoods.sample_spring_cache.beans;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.treewoods.sample_spring_cache.service;
 
 import java.util.concurrent.TimeUnit;
 import net.treewoods.sample_spring_cache.cache.Item;
-import net.treewoods.sample_spring_cache.service.ItemService;
+import static org.hamcrest.CoreMatchers.is;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
-public class CacheSample implements Job {
-    
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+/**
+ *
+ * @author toru
+ */
+@RunWith(SpringRunner.class)
+@ContextConfiguration("classpath:applicationContext-test.xml")
+public class ItemServiceTest {
     
     @Autowired
     private ItemService itemService;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     
-    @Override
-    public void execute(String[] args) {
+    
+    public ItemServiceTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    /**
+     * Test of find method, of class ItemService.
+     */
+    @Test
+    public void testFind() {
+        
+String expected = "Hello World";
+String actual = "Hello" + " " + "World";
+assertThat(actual, is(expected));
+
+        System.out.println("find");
         log.info("start.");
         
         StopWatch stopWatch = new StopWatch();
@@ -111,6 +160,32 @@ public class CacheSample implements Job {
 
         
         log.info("finish.");
+        
+        
+    }
+
+    /**
+     * Test of update method, of class ItemService.
+     */
+    @Test
+    public void testUpdate() {
+        System.out.println("update");
+    }
+
+    /**
+     * Test of put method, of class ItemService.
+     */
+    @Test
+    public void testPut() {
+        System.out.println("put");
+    }
+
+    /**
+     * Test of clear method, of class ItemService.
+     */
+    @Test
+    public void testClear() {
+        System.out.println("clear");
     }
     
 }

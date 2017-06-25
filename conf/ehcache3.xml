@@ -11,16 +11,16 @@
         <jsr107:defaults enable-management="true" enable-statistics="true"/> 
     </service>
       
-    <cache alias="itemCache" uses-template="heap-cache">
+    <cache alias="itemCache" uses-template="logging-template">
         <expiry>
-            <ttl unit="seconds">3</ttl> <!-- tti  -->
+            <ttl unit="seconds">3</ttl> <!-- or tti  -->
         </expiry>
         <resources>
             <heap unit="entries">5</heap>
         </resources>
     </cache>
     
-    <cache-template name="heap-cache">
+    <cache-template name="logging-template">
         <listeners>    
             <listener>
                 <class>net.treewoods.sample_spring_cache.cache.CacheEventLog</class>

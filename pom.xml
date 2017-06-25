@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.treewoods</groupId>
     <artifactId>sample_spring_cache</artifactId>
@@ -9,8 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.version>4.3.9.RELEASE</spring.version> 
-        
+        <spring.version>4.3.9.RELEASE</spring.version>         
     </properties>
     <dependencies>
         <!-- spring -->
@@ -24,42 +26,46 @@
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>    
+        
+        <!-- ehCache 2.x -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>2.10.4</version>
         </dependency>
 
-<dependency>
-    <groupId>org.ehcache</groupId>
-    <artifactId>ehcache</artifactId>
-    <version>3.3.1</version>
-</dependency>
-  <dependency>
-    <groupId>javax.cache</groupId>
-    <artifactId>cache-api</artifactId>
-    <version>1.0.0</version>
-  </dependency>
-
+        <!-- ehCache 3.x -->
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <!-- JSR107 -->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        <!-- Logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
         </dependency>          
-        
+                
+        <!-- TEST -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
-
-        </dependency>        
-        
+        </dependency>                
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-        </dependency>
-        
+            <scope>test</scope>
+        </dependency>        
     </dependencies>
 </project>
