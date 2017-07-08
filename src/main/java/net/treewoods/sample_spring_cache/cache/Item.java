@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
     
-    private String id;
+    private ItemKey id;
     private String name;
 
-    public Item(String id) {
+    public Item(ItemKey id) {
         this.id = id;
     }
 
-    public String getId() {
+    public ItemKey getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ItemKey id) {
         this.id = id;
     }
 
@@ -29,6 +29,6 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Item{" + "id=" + id + ", name=" + name + '}';
+        return "Item{" + "id=" + id.toString() + ", name=" + name + '}';
     }
 }

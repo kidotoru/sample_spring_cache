@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import net.treewoods.sample_spring_cache.cache.Item;
+import net.treewoods.sample_spring_cache.cache.ItemKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class ItemService {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private final Map<String, Item> storage = new HashMap<>();
+    private final Map<ItemKey, Item> storage = new HashMap<>();
 
-    @Cacheable(cacheNames = "itemCache", key = "#id")
-    public Item find(String id) {
+    @Cacheable(cacheNames = "itemCache", key = "{#id.foo, #id.bar}")
+    public Item find(ItemKey id) {
         try {
             TimeUnit.SECONDS.sleep(1L);
         } catch (InterruptedException e) {
@@ -32,13 +33,13 @@ public class ItemService {
         return storage.getOrDefault(id, null);
     }
 
-    @CachePut(cacheNames = "itemCache", key = "#item.id")
+    @CachePut(cacheNames = "itemCache", key = "{#item.id.foo, #item.id.bar}")
     public Item update(Item item) {
         storage.put(item.getId(), item);
         return item;
     }
 
-    @CacheEvict(cacheNames = "itemCache", key = "#item.id")
+    @CacheEvict(cacheNames = "itemCache", key = "{#item.id, #item.id.bar}")
     public void put(Item item) {
         storage.put(item.getId(), item);
     }
